@@ -54,19 +54,19 @@ std::string truthtable_to_expr(const std::string& truth_table)
     int len = truth_table.size();
     while (len > 1)
     {
+        if (len % 2 != 0)
+        {
+            cout << "error: invalid truth table length: " << truth_table.size() << endl;
+            return "";
+        }
         len = len / 2;
-    }
-    if (len == 0)
-    {
-        cout << "error: invalid truth table" << endl;
-        return "";
     }
 
     for (size_t i = 0; i < truth_table.size(); i++)
     {
         if (truth_table[i] != '0' && truth_table[i] != '1')
         {
-            cout << "error: invalid value in the truth table" << endl;
+            cout << "error: pos " << i << ": invalid value in the truth table" << endl;
             return "";
         }
     }
@@ -74,4 +74,36 @@ std::string truthtable_to_expr(const std::string& truth_table)
     Simplified s(truth_table);
     return s.toString();
 }
+```
+
+## 测试样例
+
+### test case 1:
+```
+input: 11001100110011000011111010001100
+output: BC' + ABD' + AC'DE' + B'CDE' + BE
+```
+
+### test case 2:
+```
+input: 11001100
+output: B
+```
+
+### test case 3:
+```
+input: 10101100
+output: BC' + AC
+```
+
+### test case 4:
+```
+input: 10101
+output: error: invalid truth table length: 5
+```
+
+### test case 5:
+```
+input: 10102010
+output: error: pos 4: invalid value in the truth table
 ```

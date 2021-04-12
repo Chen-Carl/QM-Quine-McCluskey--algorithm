@@ -9,6 +9,8 @@ Simplified::Simplified(const string &str) : LogicalExpr(str)
         process = collabrate(i--);
     }
     // print_map();
+    // 此时已经获得了最小项列表
+    // 需要进行最后一步，利用素蕴含表进一步化简得到最终结果
     vector<string> simp_expr = select();
 
     expr = "";
@@ -278,12 +280,21 @@ std::string truthtable_to_expr(const std::string& truth_table)
     int len = truth_table.size();
     while (len > 1)
     {
+        if (len % 2 != 0)
+        {
+            cout << "error: invalid truth table length: " << truth_table.size() << endl;
+            return "";
+        }
         len = len / 2;
     }
-    if (len == 0)
+
+    for (size_t i = 0; i < truth_table.size(); i++)
     {
-        cout << "error: invalid truth table" << endl;
-        return "";
+        if (truth_table[i] != '0' && truth_table[i] != '1')
+        {
+            cout << "error: pos " << i << ": invalid value in the truth table" << endl;
+            return "";
+        }
     }
 
     Simplified s(truth_table);
